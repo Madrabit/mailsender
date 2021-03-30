@@ -1,10 +1,12 @@
-package ru.madrabit.mailsender;
+package ru.madrabit.mailsender.service;
 
 import lombok.Getter;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import lombok.Setter;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import ru.madrabit.mailsender.reader.HtmlReader;
+import ru.madrabit.mailsender.reader.ExcelReader;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -13,53 +15,41 @@ import java.util.List;
 
 @Service
 @Getter
-public class EmailGenerator {
+@Setter
+public class EmailSenderService {
     List<MimeMessage> messages = new ArrayList<>();
 
     private final JavaMailSender emailSender;
-    private final EmailTemplate emailTemplate;
-    private final ReadExcel excel;
+    private final HtmlReader htmlReader;
+    private final ExcelReader excel;
+    private String subject = "RE:";
 
-    public EmailGenerator(JavaMailSender emailSender, EmailTemplate emailTemplate,
-                          ReadExcel excel) throws MessagingException {
+    public EmailSenderService(JavaMailSender emailSender, HtmlReader htmlReader,
+                              ExcelReader excel) throws MessagingException {
         this.emailSender = emailSender;
-        this.emailTemplate = emailTemplate;
+        this.htmlReader = htmlReader;
         this.excel = excel;
-        this.emailTemplate.setTemplate();
-        generator();
-//        messages.add(createMessage("madrabot@gmail.com"));
-//        messages.add(createMessage("hustle@inbox.ru"));
+        this.htmlReader.setTemplate();
     }
 
-    private void generator() throws MessagingException {
+    public void generate() throws MessagingException {
         final List<String> emails = excel.getEmails();
         for (String email : emails) {
             messages.add(createMessage(email));
         }
     }
 
-
-
-
-
     private MimeMessage createMessage(String to) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
-
         boolean multipart = true;
-
         MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
-
-        String htmlMsg = emailTemplate.getTemplate();
+        String htmlMsg = htmlReader.getTemplate();
         message.setHeader("Content-Type", "text/html; charset=utf-8");
         message.setContent(htmlMsg, "text/html; charset=utf-8");
-
-//        helper.setFrom("noreply@baeldung.com");
         helper.setTo(to);
-        helper.setSubject("Заголовок");
+        helper.setSubject(subject);
         return message;
     }
-
-
 }
 
 

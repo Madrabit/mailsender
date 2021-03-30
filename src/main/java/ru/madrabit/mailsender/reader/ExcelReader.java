@@ -1,4 +1,4 @@
-package ru.madrabit.mailsender;
+package ru.madrabit.mailsender.reader;
 
 import lombok.Getter;
 import org.apache.poi.ss.usermodel.Cell;
@@ -17,11 +17,11 @@ import java.util.List;
 
 @Component
 @Getter
-public class ReadExcel {
+public class ExcelReader {
 
     private List<String> emails = new ArrayList<>();
 
-    public ReadExcel() {
+    public ExcelReader() {
         readFile();
     }
 

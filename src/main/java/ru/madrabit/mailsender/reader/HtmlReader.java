@@ -1,4 +1,4 @@
-package ru.madrabit.mailsender;
+package ru.madrabit.mailsender.reader;
 
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 @Component
 @Getter
-public class EmailTemplate {
+public class HtmlReader {
     private String template;
 
 

@@ -1,4 +1,4 @@
-package ru.madrabit.mailsender;
+package ru.madrabit.mailsender.config;
 
 import lombok.Getter;
 import lombok.Setter;
