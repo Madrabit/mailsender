@@ -1,6 +1,7 @@
 package ru.madrabit.mailsender;
 
 import lombok.Getter;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -17,17 +18,29 @@ public class EmailGenerator {
 
     private final JavaMailSender emailSender;
     private final EmailTemplate emailTemplate;
+    private final ReadExcel excel;
 
-    public EmailGenerator(JavaMailSender emailSender, EmailTemplate emailTemplate) throws MessagingException {
+    public EmailGenerator(JavaMailSender emailSender, EmailTemplate emailTemplate,
+                          ReadExcel excel) throws MessagingException {
         this.emailSender = emailSender;
         this.emailTemplate = emailTemplate;
-        messages.add(createMessage("madrabot@gmail.com"));
-        messages.add(createMessage("hustle@inbox.ru"));
+        this.excel = excel;
+        this.emailTemplate.setTemplate();
+        generator();
+//        messages.add(createMessage("madrabot@gmail.com"));
+//        messages.add(createMessage("hustle@inbox.ru"));
     }
 
-    private void pushRecipient() throws MessagingException {
-
+    private void generator() throws MessagingException {
+        final List<String> emails = excel.getEmails();
+        for (String email : emails) {
+            messages.add(createMessage(email));
+        }
     }
+
+
+
+
 
     private MimeMessage createMessage(String to) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();

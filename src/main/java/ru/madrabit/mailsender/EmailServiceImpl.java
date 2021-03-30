@@ -1,6 +1,9 @@
 package ru.madrabit.mailsender;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 @RestController
+@Api(description = "REST API description")
 public class EmailServiceImpl {
 
     private final JavaMailSender emailSender;
@@ -20,12 +24,13 @@ public class EmailServiceImpl {
         this.emailGenerator = emailGenerator;
     }
 
-    @ResponseBody
-    @RequestMapping("/send")
-    public void sendSimpleMessage(String to, String subject, String text) throws MessagingException {
+    @ApiOperation(value = "Send emails")
+    @GetMapping("/send")
+    public void sendSimpleMessage() throws MessagingException {
         List<MimeMessage> messages = emailGenerator.getMessages();
         for (MimeMessage message : messages) {
             emailSender.send(message);
         }
+        System.out.println("Finished");
     }
 }
