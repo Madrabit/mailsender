@@ -25,7 +25,7 @@ public class EmailSenderService {
     private String subject = "RE:";
 
     public EmailSenderService(JavaMailSender emailSender, HtmlReader htmlReader,
-                              ExcelReader excel) throws MessagingException {
+                              ExcelReader excel) {
         this.emailSender = emailSender;
         this.htmlReader = htmlReader;
         this.excel = excel;
@@ -41,8 +41,7 @@ public class EmailSenderService {
 
     private MimeMessage createMessage(String to) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
-        boolean multipart = true;
-        MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "UTF-8");
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         String htmlMsg = htmlReader.getTemplate();
         message.setHeader("Content-Type", "text/html; charset=utf-8");
         message.setContent(htmlMsg, "text/html; charset=utf-8");

@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 public class ExcelReader {
 
-    private List<String> emails = new ArrayList<>();
+    private final List<String> emails = new ArrayList<>();
 
     public ExcelReader() {
         readFile();
@@ -30,9 +30,7 @@ public class ExcelReader {
         try (FileInputStream fis = new FileInputStream(excelFile)) {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIt = sheet.iterator();
-            while (rowIt.hasNext()) {
-                Row row = rowIt.next();
+            for (Row row : sheet) {
                 Iterator<Cell> cellIterator = row.cellIterator();
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
@@ -40,8 +38,6 @@ public class ExcelReader {
                 }
             }
             workbook.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
