@@ -1,4 +1,4 @@
-package ru.madrabit.mailsender.service;
+package ru.madrabit.mailsender.exception;
 
 public class StorageFileNotFoundException extends StorageException {
 
