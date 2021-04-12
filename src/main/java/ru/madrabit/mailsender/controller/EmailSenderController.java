@@ -18,10 +18,12 @@ public class EmailSenderController {
 
     private final JavaMailSender emailSender;
     private final EmailSenderService emailSenderService;
+    private HtmlReader htmlReader;
 
-    public EmailSenderController(JavaMailSender emailSender, EmailSenderService emailSenderService) {
+    public EmailSenderController(JavaMailSender emailSender, EmailSenderService emailSenderService, HtmlReader htmlReader) {
         this.emailSender = emailSender;
         this.emailSenderService = emailSenderService;
+        this.htmlReader = htmlReader;
     }
 
     @ApiOperation(value = "Send emails")
@@ -41,7 +43,6 @@ public class EmailSenderController {
 
     @GetMapping("/check-html")
     public String sendSimpleMessage() {
-        HtmlReader htmlReader = new HtmlReader();
         return htmlReader.readFile();
     }
 }

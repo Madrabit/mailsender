@@ -1,4 +1,4 @@
-package ru.madrabit.mailsender.reader;
+package ru.madrabit.mailsender.storage;
 
 import lombok.Getter;
 import org.apache.poi.ss.usermodel.Cell;
@@ -6,27 +6,31 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
+import ru.madrabit.mailsender.config.StorageProperties;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 @Component
 @Getter
-public class ExcelReader {
+public class ExcelEmailsDao implements EmailsDAO {
 
     private final List<String> emails = new ArrayList<>();
+    private final Path rootLocation;
 
-    public ExcelReader() {
-        readFile();
+    public ExcelEmailsDao(StorageProperties properties) {
+        this.rootLocation = Paths.get(properties.getLocation());
     }
 
-    public void readFile() {
-        File excelFile = new File("emails.xlsx");
+    @Override
+    public void readEmails() {
+        File excelFile = new File(rootLocation + File.separator + "emails.xlsx");
         try (FileInputStream fis = new FileInputStream(excelFile)) {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -41,5 +45,9 @@ public class ExcelReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setEmails() {
+
     }
 }

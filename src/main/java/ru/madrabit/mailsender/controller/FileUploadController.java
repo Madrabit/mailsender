@@ -12,27 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.madrabit.mailsender.exception.StorageFileNotFoundException;
-import ru.madrabit.mailsender.service.StorageService;
+import ru.madrabit.mailsender.service.FileSystemStorageService;
 
 @RestController
 @RequestMapping("files/")
 @Api
 public class FileUploadController {
 
-    private final StorageService storageService;
+    private final FileSystemStorageService fileSystemStorageService;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
-        this.storageService = storageService;
+    public FileUploadController(FileSystemStorageService fileSystemStorageService) {
+        this.fileSystemStorageService = fileSystemStorageService;
     }
 
     @GetMapping("/")
     public ResponseEntity<String> listUploadedFiles(Model model) throws IOException {
 
-        final List<String> serveFile = storageService.loadAll().map(
+        final List<String> serveFile = fileSystemStorageService.loadAll().map(
                 path -> path.getFileName().toString())
                 .collect(Collectors.toList());
         model.addAttribute("files", serveFile);
@@ -44,7 +43,7 @@ public class FileUploadController {
     @ResponseBody
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
 
-        Resource file = storageService.loadAsResource(filename);
+        Resource file = fileSystemStorageService.loadAsResource(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
@@ -53,7 +52,7 @@ public class FileUploadController {
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
-        storageService.store(file);
+        fileSystemStorageService.store(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
