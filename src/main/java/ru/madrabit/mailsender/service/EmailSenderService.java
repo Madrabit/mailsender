@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import ru.madrabit.mailsender.config.MailConfig;
 import ru.madrabit.mailsender.reader.HtmlReader;
 import ru.madrabit.mailsender.reader.TemplateReader;
 import ru.madrabit.mailsender.storage.EmailsDAO;
@@ -25,12 +26,14 @@ public class EmailSenderService {
     private final TemplateReader templateReader;
     private final EmailsDAO excel;
     private String subject = "RE:";
+    private final MailConfig mailConfig;
 
     public EmailSenderService(JavaMailSender emailSender, HtmlReader templateReader,
-                              ExcelEmailsDao excel) {
+                              ExcelEmailsDao excel, MailConfig mailConfig) {
         this.emailSender = emailSender;
         this.templateReader = templateReader;
         this.excel = excel;
+        this.mailConfig = mailConfig;
     }
 
     public void generate() throws MessagingException {
@@ -48,6 +51,7 @@ public class EmailSenderService {
         String htmlMsg = templateReader.getTemplate();
         message.setHeader("Content-Type", "text/html; charset=utf-8");
         message.setContent(htmlMsg, "text/html; charset=utf-8");
+        helper.setFrom(mailConfig.getUsername());
         helper.setTo(to);
         helper.setSubject(subject);
         return message;
