@@ -37,6 +37,7 @@ public class EmailSenderService {
     }
 
     public void generate() throws MessagingException {
+        messages.clear();
         excel.readEmails();
         final List<String> emails = excel.getEmails();
         for (String email : emails) {

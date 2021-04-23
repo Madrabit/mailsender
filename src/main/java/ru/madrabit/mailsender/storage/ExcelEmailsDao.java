@@ -21,7 +21,7 @@ import java.util.List;
 @Getter
 public class ExcelEmailsDao implements EmailsDAO {
 
-    private final List<String> emails = new ArrayList<>();
+    private List<String> emails;
     private final Path rootLocation;
 
     public ExcelEmailsDao(StorageProperties properties) {
@@ -30,6 +30,7 @@ public class ExcelEmailsDao implements EmailsDAO {
 
     @Override
     public void readEmails() {
+        emails = new ArrayList<>();
         File excelFile = new File(rootLocation + File.separator + "emails.xlsx");
         try (FileInputStream fis = new FileInputStream(excelFile)) {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -37,8 +38,10 @@ public class ExcelEmailsDao implements EmailsDAO {
             for (Row row : sheet) {
                 Iterator<Cell> cellIterator = row.cellIterator();
                 while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-                    emails.add(cell.toString());
+                    String cell = cellIterator.next().toString();
+                    if (!cell.isEmpty()) {
+                        emails.add(cell);
+                    }
                 }
             }
             workbook.close();
