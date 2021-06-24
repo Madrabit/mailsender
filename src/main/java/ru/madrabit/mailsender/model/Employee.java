@@ -17,13 +17,13 @@ public class Employee {
     private Integer objectId;
 
     @Column(name = "P1973")
-    String name;
+    private String name;
 
     @Column(name = "P1974")
-    String surname;
+    private String surname;
 
     @Column(name = "P971")
-    String email;
+    private String email;
 
     @Column(name = "p3251")
     private Integer p3251;
@@ -38,14 +38,13 @@ public class Employee {
     private Integer p3271;
 
     @ManyToOne
-    (optional=false, cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn (name="P2837")
+            (optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "P2837")
     private Department department;
 
 
-
     @ManyToOne
-            (optional=false, cascade=CascadeType.ALL)
-    @JoinColumn (name="P944")
-    private Сounterparty сounterparty;
+            (optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "P944")
+    private Counterparty counterparty;
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "dbo.Attr5")
-public class Сounterparty {
+public class Counterparty {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -26,7 +26,7 @@ public class DataConfig {
     @Value("${spring.jpa.properties.hibernate.dialect}")
     String dialect;
     @Value("${spring.jpa.show-sql}")
-    String show_sql;
+    String showSql;
     @Value("${spring.jpa.hibernate.ddl-auto}")
     String hbm2ddl;
 
@@ -66,7 +66,7 @@ public class DataConfig {
     Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", dialect);
-        properties.setProperty("hibernate.show_sql", show_sql);
+        properties.setProperty("hibernate.show_sql", showSql);
         properties.setProperty("hibernate.hbm2ddl.auto", hbm2ddl);
 
         return properties;

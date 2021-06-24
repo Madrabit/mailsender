@@ -12,7 +12,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
 
     List<Employee> findAll();
 
-    @Query("SELECT employee FROM Employee employee join fetch employee.department dep join fetch employee.сounterparty contragent " +
+    @Query("SELECT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
             "WHERE (contragent.p3284 = 0 or contragent.p3284 is null) and  \n" +
             "(contragent.revokedLicense = 0 or contragent.revokedLicense is null) and " +
             "(contragent.bankLiquidated = 0 or contragent.bankLiquidated is null) and " +
@@ -27,7 +27,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
             "employee.name not like ''''")
     List<Employee> findAllCustom();
 
-    @Query("SELECT employee FROM Employee employee join fetch employee.department dep join fetch employee.сounterparty contragent " +
+    @Query("SELECT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
             "WHERE dep.departmentNumber = :depNumber AND " +
          /*   "(contragent.p3284 = 0 or contragent.p3284 is null) and  \n" +
             "(contragent.revokedLicense = 0 or contragent.revokedLicense is null) and " +
@@ -44,7 +44,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
     List<Employee> findEmployeeByDepartmentNumber(@Param("depNumber") Integer depNumber);
 
     // FP query
-    @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.сounterparty contragent " +
+    @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
             "WHERE dep.departmentNumber = :depNumber AND " +
             "employee.email IS NOT NULL AND \n" +
             "employee.email NOT LIKE '''' AND\n" +
@@ -62,7 +62,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
     List<Employee> findEmployeeByDepartmentNumberFP(@Param("depNumber") Integer depNumber);
 
     // FP query
-    @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.сounterparty contragent " +
+    @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
             "WHERE dep.departmentNumber IN :deps AND " +
             "employee.email IS NOT NULL AND \n" +
             "employee.email NOT LIKE '''' AND\n" +
