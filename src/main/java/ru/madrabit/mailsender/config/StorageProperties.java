@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Storage - folder for uploads email-templaite, attachments, etc.
+ */
 @Configuration
 @ConfigurationProperties(prefix = "storage")
 @Getter

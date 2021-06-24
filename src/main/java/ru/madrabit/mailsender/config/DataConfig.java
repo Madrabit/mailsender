@@ -15,6 +15,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Database configuration.
+ */
 @Configuration
 @EnableJpaRepositories("ru.madrabit.mailsender.repository")
 @EnableTransactionManagement

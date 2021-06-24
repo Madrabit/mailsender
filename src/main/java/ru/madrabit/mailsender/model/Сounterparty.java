@@ -2,6 +2,9 @@ package ru.madrabit.mailsender.model;
 
 import javax.persistence.*;
 
+/**
+ * Contragent
+ */
 @Entity
 @Table(name = "dbo.Attr5")
 public class Сounterparty {
@@ -17,5 +20,11 @@ public class Сounterparty {
     private Integer revokedLicense;
     @Column(name = "p2386")
     private Integer bankLiquidated;
+    @Column(name = "p3177")
+    private Boolean hasDepartment;
+
+    // NFO, Bank, bank branch
+    @Column(name = "p3189")
+    private Float ctpType;
 
 }
