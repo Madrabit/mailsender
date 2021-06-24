@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ru.madrabit.mailsender.dto.EmployeeDTO;
+import ru.madrabit.mailsender.mapper.EmployeeMapper;
 import ru.madrabit.mailsender.model.Employee;
 import ru.madrabit.mailsender.service.fp.QueryService;
 
@@ -31,7 +32,7 @@ public class QueryFPController {
     @ApiOperation(value = "Get queries fp")
     @GetMapping("/query/fp/{deps}")
     public List<EmployeeDTO> sendSimpleMessage(
-            @PathVariable List<Integer> deps)  {
+            @PathVariable List<Integer> deps) {
         System.out.println(deps);
         List<Integer> departs = new ArrayList<>();
         for (Integer dep : deps) {
@@ -42,20 +43,20 @@ public class QueryFPController {
         return EmployeeToDTOs(employeeByDeps);
     }
 
-    private EmployeeDTO EmployeeToDTO(Employee employee) {
-        return EmployeeDTO.builder()
-                .objectId(employee.getObjectId())
-                .name(employee.getName())
-                .sureName(employee.getSurname())
-                .email(employee.getEmail())
-                .department(employee.getDepartment().getName())
-                .departmentNum(employee.getDepartment().getDepartmentNumber())
-                .build();
-    }
+//    private EmployeeDTO EmployeeToDTO(Employee employee) {
+//        return EmployeeDTO.builder()
+//                .objectId(employee.getObjectId())
+//                .name(employee.getName())
+//                .surename(employee.getSurname())
+//                .email(employee.getEmail())
+//                .depName(employee.getDepartment().getDepName())
+//                .departmentNumber(employee.getDepartment().getDepartmentNumber())
+//                .build();
+//    }
 
     private List<EmployeeDTO> EmployeeToDTOs(List<Employee> employeeByDeps) {
-       return employeeByDeps.stream()
-               .map(employee -> EmployeeToDTO(employee))
-               .collect(Collectors.toList());
+        return employeeByDeps.stream()
+                .map(employee -> EmployeeMapper.INSTANCE.toDto(employee))
+                .collect(Collectors.toList());
     }
 }
