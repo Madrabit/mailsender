@@ -3,7 +3,6 @@ package ru.madrabit.mailsender.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +30,7 @@ public class QueryFPController {
 
     @ApiOperation(value = "Get queries fp")
     @GetMapping("/query/fp/{deps}")
-    public List<EmployeeDTO> sendSimpleMessage(
+    public List<EmployeeDTO> getEmployeesByDeps(
             @PathVariable List<Integer> deps) {
         System.out.println(deps);
         List<Integer> departs = new ArrayList<>();
@@ -43,16 +42,18 @@ public class QueryFPController {
         return EmployeeToDTOs(employeeByDeps);
     }
 
-//    private EmployeeDTO EmployeeToDTO(Employee employee) {
-//        return EmployeeDTO.builder()
-//                .objectId(employee.getObjectId())
-//                .name(employee.getName())
-//                .surename(employee.getSurname())
-//                .email(employee.getEmail())
-//                .depName(employee.getDepartment().getDepName())
-//                .departmentNumber(employee.getDepartment().getDepartmentNumber())
-//                .build();
-//    }
+    @ApiOperation(value = "Get amount of employees selected by Departments")
+    @GetMapping("/query/fp/count/{deps}")
+    public Integer countEmployeesByDeps(
+            @PathVariable List<Integer> deps) {
+        System.out.println(deps);
+        List<Integer> departs = new ArrayList<>();
+        for (Integer dep : deps) {
+            System.out.println(dep);
+            departs.add(dep);
+        }
+        return service.countEmployeeByDeps(departs);
+    }
 
     private List<EmployeeDTO> EmployeeToDTOs(List<Employee> employeeByDeps) {
         return employeeByDeps.stream()

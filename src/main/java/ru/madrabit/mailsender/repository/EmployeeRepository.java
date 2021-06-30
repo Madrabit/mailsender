@@ -43,40 +43,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
             "employee.name not like ''''")
     List<Employee> findEmployeeByDepartmentNumber(@Param("depNumber") Integer depNumber);
 
-    // FP query
-    @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
-            "WHERE dep.departmentNumber = :depNumber AND " +
-            "employee.email IS NOT NULL AND \n" +
-            "employee.email NOT LIKE '''' AND\n" +
-            "employee.email NOT LIKE ' ' AND\n" +
-            "employee.email NOT LIKE '' AND\n" +
-            "employee.name not like ''''" + "AND\n" +
-            "dep.departmentNumber IS NOT NULL AND\n" +
-            "contragent.hasDepartment IS NOT NULL AND\n" +
-            // ФП без лицензии ставят 1 или 0, contragent.revokedLicense = 0
-            // то есть в значении IS NULL банк существует
-            "contragent.revokedLicense is null AND " +
-            "contragent.bankLiquidated is null AND " +
-            "contragent.ctpType = 3"
-    )
-    List<Employee> findEmployeeByDepartmentNumberFP(@Param("depNumber") Integer depNumber);
 
-    // FP query
-    @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
-            "WHERE dep.departmentNumber IN :deps AND " +
-            "employee.email IS NOT NULL AND \n" +
-            "employee.email NOT LIKE '''' AND\n" +
-            "employee.email NOT LIKE ' ' AND\n" +
-            "employee.email NOT LIKE '' AND\n" +
-            "employee.name not like ''''" + "AND\n" +
-            "dep.departmentNumber IS NOT NULL AND\n" +
-            "contragent.hasDepartment IS NOT NULL AND\n" +
-            // ФП без лицензии ставят 1 или 0, contragent.revokedLicense = 0
-            // то есть в значении IS NULL банк существует
-            "contragent.revokedLicense is null AND " +
-            "contragent.bankLiquidated is null AND " +
-            "contragent.ctpType = 3"
-    )
-    List<Employee> findEmployeeByDepsFP(@Param("deps") List<Integer> deps);
 
 }

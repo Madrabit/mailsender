@@ -44,21 +44,5 @@ class EmployeeRepositoryTest {
     }
 
 
-    @Test
-    void findEmployeeByDepartmentNumberFP() {
-        final List<Employee> contacts = repository.findEmployeeByDepartmentNumberFP(1);
-        for (int i = 0; i < contacts.size(); i++) {
-            System.out.println(contacts.get(i).getSurname() + " " + contacts.get(i).getName() + " " + contacts.get(i).getEmail());
-        }
-        System.out.println(contacts.size());
-    }
 
-    @Test
-    void findEmployeeByDepsFP() {
-        List<Integer> deps = new ArrayList<>();
-        deps.add(1);
-        deps.add(2);
-        final List<Employee> contacts = repository.findEmployeeByDepsFP(deps);
-        System.out.println(contacts.size());
-    }
 }
