@@ -3,6 +3,9 @@ package ru.madrabit.mailsender.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +41,8 @@ public class QueryFPController {
             System.out.println(dep);
             departs.add(dep);
         }
-        final List<Employee> employeeByDeps = service.findEmployeeByDeps(departs);
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "objectId");
+        final List<Employee> employeeByDeps = service.findEmployeeByDeps(departs, 3.0F, pageable);
         return EmployeeToDTOs(employeeByDeps);
     }
 
