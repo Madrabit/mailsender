@@ -18,16 +18,16 @@ public class QueryService {
         this.repository = repository;
     }
 
-    public List<Employee> findEmployeeByDeps(List<Integer> deps, Float orgType, Pageable pageable) {
-        return repository.findEmployeeByDeps(deps, orgType, pageable);
+    public List<Employee> findEmployeeByDeps(List<Integer> deps, List<Float> orgTypes, Pageable pageable) {
+        return repository.findEmployeeByDeps(deps, orgTypes, pageable);
     }
 
-    public int countEmployeeByDeps(List<Integer> deps) {
-       return repository.countEmployeeByDeps(deps, 3.0F);
+    public int countEmployeeByDeps(List<Integer> deps, List<Float> orgTypes) {
+       return repository.countEmployeeByDeps(deps, orgTypes);
     }
 
-    public List<Employee> findAllEmployeeByDeps(List<Integer> deps, Float orgType) {
+    public List<Employee> findAllEmployeeByDeps(List<Integer> deps, List<Float> orgTypes) {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "objectId");
-        return repository.findEmployeeByDeps(deps, orgType, pageable);
+        return repository.findEmployeeByDeps(deps, orgTypes, pageable);
     }
 }

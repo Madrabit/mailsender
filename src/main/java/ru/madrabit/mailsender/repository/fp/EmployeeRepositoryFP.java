@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface EmployeeRepositoryFP extends CrudRepository<Employee, Integer> {
 
+
     // ФП без лицензии ставят 1 или 0, contragent.revokedLicense = 0
     // то есть в значении IS NULL банк существует
     final String QUERY = "WHERE dep.departmentNumber IN :deps AND " +
@@ -22,17 +23,16 @@ public interface EmployeeRepositoryFP extends CrudRepository<Employee, Integer> 
             "contragent.hasDepartment IS NOT NULL AND\n" +
             "contragent.revokedLicense is null AND " +
             "contragent.bankLiquidated is null AND " +
-            "contragent.ctpType = :orgType";
-
+            "contragent.ctpType IN :orgType";
 
    @Query("SELECT DISTINCT COUNT(employee.objectId) " +
             "FROM Employee employee join employee.department dep join employee.counterparty contragent " +
             QUERY
     )
-    Integer countEmployeeByDeps(@Param("deps") List<Integer> deps, @Param("orgType") Float orgType);
+    Integer countEmployeeByDeps(@Param("deps") List<Integer> deps, @Param("orgType") List<Float> orgTypes);
 
     @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
             QUERY
     )
-    List<Employee> findEmployeeByDeps(@Param("deps") List<Integer> deps, @Param("orgType") Float orgType, Pageable pageable);
+    List<Employee> findEmployeeByDeps(@Param("deps") List<Integer> deps, @Param("orgType") List<Float> orgTypes, Pageable pageable);
 }

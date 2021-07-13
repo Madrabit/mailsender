@@ -32,31 +32,19 @@ public class QueryFPController {
     }
 
     @ApiOperation(value = "Get queries fp")
-    @GetMapping("/query/fp/{deps}")
+    @GetMapping("/query/fp/{deps}/{orgTypes}")
     public List<EmployeeDTO> getEmployeesByDeps(
-            @PathVariable List<Integer> deps) {
-        System.out.println(deps);
-        List<Integer> departs = new ArrayList<>();
-        for (Integer dep : deps) {
-            System.out.println(dep);
-            departs.add(dep);
-        }
+            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "objectId");
-        final List<Employee> employeeByDeps = service.findEmployeeByDeps(departs, 3.0F, pageable);
+        final List<Employee> employeeByDeps = service.findEmployeeByDeps(deps, orgTypes, pageable);
         return EmployeeToDTOs(employeeByDeps);
     }
 
     @ApiOperation(value = "Get amount of employees selected by Departments")
-    @GetMapping("/query/fp/count/{deps}")
+    @GetMapping("/query/fp/count/{deps}/{orgTypes}")
     public Integer countEmployeesByDeps(
-            @PathVariable List<Integer> deps) {
-        System.out.println(deps);
-        List<Integer> departs = new ArrayList<>();
-        for (Integer dep : deps) {
-            System.out.println(dep);
-            departs.add(dep);
-        }
-        return service.countEmployeeByDeps(departs);
+            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) {
+        return service.countEmployeeByDeps(deps, orgTypes);
     }
 
     private List<EmployeeDTO> EmployeeToDTOs(List<Employee> employeeByDeps) {
