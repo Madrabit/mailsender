@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
 import ru.madrabit.mailsender.repository.fp.EmployeeRepositoryFP;
 
@@ -30,4 +31,5 @@ public class QueryService {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "objectId");
         return repository.findEmployeeByDeps(deps, orgTypes, pageable);
     }
+
 }

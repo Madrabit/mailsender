@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import ru.madrabit.mailsender.consts.TypeOfOrganisation;
+import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,6 @@ class EmployeeRepositoryFPTest {
 
     @Autowired
     private EmployeeRepositoryFP repository;
-
 
     @Test
     void countEmployeeByDepsFP() {

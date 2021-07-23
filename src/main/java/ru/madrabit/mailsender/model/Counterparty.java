@@ -1,11 +1,16 @@
 package ru.madrabit.mailsender.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 /**
  * Contragent
  */
 @Entity
+@Getter
+@Setter
 @Table(name = "dbo.Attr5")
 public class Counterparty {
 

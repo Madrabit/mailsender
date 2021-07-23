@@ -3,6 +3,7 @@ package ru.madrabit.mailsender.repository.fp;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
 import org.springframework.data.domain.Pageable;
 
