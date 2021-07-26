@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class QueryFPController {
 
     private final QueryService service;
+
     @ApiModelProperty(name = "Department", dataType = "List", example = "[1, 2]")
     private List<Integer> deps;
 
@@ -31,7 +32,7 @@ public class QueryFPController {
         this.service = service;
     }
 
-    @ApiOperation(value = "Get queries fp")
+    @ApiOperation(value = "Get list of employees")
     @GetMapping("/query/fp/{deps}/{orgTypes}")
     public List<EmployeeDTO> getEmployeesByDeps(
             @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) {
