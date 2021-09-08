@@ -2,7 +2,6 @@ package ru.madrabit.mailsender.model;
 
 import lombok.Data;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data

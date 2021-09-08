@@ -37,18 +37,18 @@ class DepartmentControllerTest {
     @MockBean
     DepartmentService service;
 
-    @Test
-    void getEmployeesByDeps() throws Exception {
-        List<CountedDepartment> deps = new ArrayList<>();
-        deps.add(new CountedDepartment(100L, 1, "Buh", 1.0F));
-        when(service.findAll())
-                .thenReturn(deps);
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/query/fp/deps/")
-                .accept(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{\"depNumber\":1,\"depType\":1.0,\"amount\":100,\"depName\":\"Buh\"}]"))
-                .andReturn();
-    }
+//    @Test
+//    void getEmployeesByDeps() throws Exception {
+//        List<CountedDepartment> deps = new ArrayList<>();
+//        deps.add(new CountedDepartment(100L, 1, "Buh", 1.0F));
+//        when(service.findAll())
+//                .thenReturn(deps);
+//        RequestBuilder request = MockMvcRequestBuilders
+//                .get("/query/fp/deps/")
+//                .accept(MediaType.APPLICATION_JSON);
+//        MvcResult result = mockMvc.perform(request)
+//                .andExpect(status().isOk())
+//                .andExpect(content().json("[{\"depNumber\":1,\"depType\":1.0,\"amount\":100,\"depName\":\"Buh\"}]"))
+//                .andReturn();
+//    }
 }

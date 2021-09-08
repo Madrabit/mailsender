@@ -20,7 +20,8 @@ class CountedDepartmentRepositoryTest {
         final List<CountedDepartment> list = repository.findAllDeps();
         for (CountedDepartment countedDepartment : list) {
             System.out.println(
-                    countedDepartment.getDepName() + " : " + countedDepartment.getDepType() + " : "
+                    countedDepartment.getDepNumber() + " : "
+                     + countedDepartment.getDepType() + " : "
                             + countedDepartment.getAmount()
             );
         }

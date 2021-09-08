@@ -1,5 +1,7 @@
 package ru.madrabit.mailsender.repository.fp;
 
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import ru.madrabit.mailsender.consts.TypeOfOrganisation;
 import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
+import ru.madrabit.mailsender.model.OrgType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +22,25 @@ class EmployeeRepositoryFPTest {
     @Autowired
     private EmployeeRepositoryFP repository;
 
+    @Autowired
+    private TypeOfOrganisation typeOfOrganisation;
+
+    float banks_branches = 0F;
+    float sng = 0F;
+    @BeforeAll
+    public void loadMap() {
+        banks_branches = typeOfOrganisation.BANKS_BRANCHES;
+        sng = typeOfOrganisation.SNG;
+    }
+
     @Test
     void countEmployeeByDepsFP() {
         List<Integer> deps = new ArrayList<>();
         deps.add(1);
         deps.add(2);
         List<Float> orgTypes = new ArrayList<>();
-        orgTypes.add(TypeOfOrganisation.BANKS_BRANCHES);
-        orgTypes.add(TypeOfOrganisation.SNG);
+        orgTypes.add(banks_branches);
+        orgTypes.add(sng);
         final Integer amount = repository.countEmployeeByDeps(deps, orgTypes);
         System.out.println(amount);
     }
@@ -35,8 +50,8 @@ class EmployeeRepositoryFPTest {
         List<Integer> deps = new ArrayList<>();
         deps.add(1);
         List<Float> orgTypes = new ArrayList<>();
-        orgTypes.add(TypeOfOrganisation.BANKS_BRANCHES);
-        orgTypes.add(TypeOfOrganisation.SNG);
+        orgTypes.add(banks_branches);
+        orgTypes.add(sng);
         Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "objectId");
         final List<Employee> contacts = repository.findEmployeeByDeps(deps, orgTypes, pageable);
         System.out.println(contacts.size());
@@ -50,8 +65,8 @@ class EmployeeRepositoryFPTest {
         List<Integer> deps = new ArrayList<>();
         deps.add(1);
         List<Float> orgTypes = new ArrayList<>();
-        orgTypes.add(TypeOfOrganisation.BANKS_BRANCHES);
-        orgTypes.add(TypeOfOrganisation.SNG);
+        orgTypes.add(banks_branches);
+        orgTypes.add(sng);
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "objectId");
         final List<Employee> contacts = repository.findEmployeeByDeps(deps, orgTypes, pageable);
         System.out.println(contacts.size());

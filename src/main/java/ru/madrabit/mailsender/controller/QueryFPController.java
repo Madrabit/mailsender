@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import ru.madrabit.mailsender.consts.TypeOfOrganisation;
 import ru.madrabit.mailsender.dto.EmployeeDTO;
 import ru.madrabit.mailsender.mapper.EmployeeMapper;
 import ru.madrabit.mailsender.model.Employee;

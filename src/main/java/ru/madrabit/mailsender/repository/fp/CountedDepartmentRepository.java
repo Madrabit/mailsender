@@ -19,7 +19,8 @@ public interface CountedDepartmentRepository extends JpaRepository<CountedDepart
             "contragent.hasDepartment IS NOT NULL AND\n" +
             "contragent.revokedLicense is null AND " +
             "contragent.bankLiquidated is null " +
-            "GROUP BY dep.departmentNumber, dep.depName, contragent.ctpType";
+            "GROUP BY dep.departmentNumber, dep.depName, contragent.ctpType " +
+            "ORDER BY dep.departmentNumber";
 
     @Query("SELECT DISTINCT new CountedDepartment (COUNT(employee.objectId), dep.departmentNumber" +
             ", dep.depName, contragent.ctpType) " +
