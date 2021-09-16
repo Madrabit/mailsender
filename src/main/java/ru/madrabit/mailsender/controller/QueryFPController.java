@@ -60,6 +60,13 @@ public class QueryFPController {
         return service.countEmployeeByDeps(deps, orgTypes);
     }
 
+    @ApiOperation(value = "Get list of employees")
+    @GetMapping("/query/fp/download/{deps}/{orgTypes}")
+    public void downloadEmpByDeps(
+            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) throws InvalidInputException, NoSuchResourceException {
+        service.getEmployeesByDepsOrgTypes(deps, orgTypes);
+    }
+
     private List<EmployeeDTO> EmployeeToDTOs(List<Employee> employeeByDeps) {
         return employeeByDeps.stream()
                 .map(employee -> EmployeeMapper.INSTANCE.toDto(employee))

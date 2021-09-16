@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -14,6 +16,6 @@ class QueryServiceTest {
 
     @Test
     void getEmployeesByDepsOrgTypes() {
-        service.getEmployeesByDepsOrgTypes();
+        service.getEmployeesByDepsOrgTypes(List.of(1),List.of(1.0F));
     }
 }

@@ -36,8 +36,8 @@ public class QueryService {
         return repository.findEmployeeByDeps(deps, orgTypes, pageable);
     }
 
-    public void getEmployeesByDepsOrgTypes() {
-        final List<Employee> employees = findAllEmployeeByDeps(List.of(1), List.of(1.0F)).get();
+    public void getEmployeesByDepsOrgTypes(List<Integer> deps, List<Float> orgTypes) {
+        final List<Employee> employees = findAllEmployeeByDeps(deps, orgTypes).get();
         CreateExcel excel = new CreateExcel();
         if (employees.size() == 0) {
 
@@ -52,5 +52,4 @@ public class QueryService {
                 .map(employee -> EmployeeMapper.INSTANCE.toDto(employee))
                 .collect(Collectors.toList());
     }
-
 }
