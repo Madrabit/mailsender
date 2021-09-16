@@ -11,7 +11,7 @@ import ru.madrabit.mailsender.model.Department;
 public class EmployeeDTO {
     private Integer objectId;
     private String name;
-    private String surename;
+    private String patronymic;
     private String email;
     private String depName;
     private Integer departmentNumber;

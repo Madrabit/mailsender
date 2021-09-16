@@ -1,7 +1,5 @@
 package ru.madrabit.mailsender.repository.fp;
 
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,9 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import ru.madrabit.mailsender.consts.TypeOfOrganisation;
-import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
-import ru.madrabit.mailsender.model.OrgType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +23,6 @@ class EmployeeRepositoryFPTest {
 
     float banks_branches = 0F;
     float sng = 0F;
-    @BeforeAll
-    public void loadMap() {
-        banks_branches = typeOfOrganisation.BANKS_BRANCHES;
-        sng = typeOfOrganisation.SNG;
-    }
 
     @Test
     void countEmployeeByDepsFP() {
@@ -53,7 +44,7 @@ class EmployeeRepositoryFPTest {
         orgTypes.add(banks_branches);
         orgTypes.add(sng);
         Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "objectId");
-        final List<Employee> contacts = repository.findEmployeeByDeps(deps, orgTypes, pageable);
+        final List<Employee> contacts = repository.findEmployeeByDeps(deps, orgTypes, pageable).get();
         System.out.println(contacts.size());
         for (Employee contact : contacts) {
             System.out.println(contact.getName() + " : " + contact.getDepartment());
@@ -68,10 +59,13 @@ class EmployeeRepositoryFPTest {
         orgTypes.add(banks_branches);
         orgTypes.add(sng);
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "objectId");
-        final List<Employee> contacts = repository.findEmployeeByDeps(deps, orgTypes, pageable);
+        final List<Employee> contacts = repository.findEmployeeByDeps(deps, orgTypes, pageable).get();
         System.out.println(contacts.size());
         for (Employee contact : contacts) {
-            System.out.println(contact.getName() + " : " + contact.getDepartment());
+            System.out.println(contact.getName()
+                    + " : " + contact.getPatronymic()
+                    + " : " + contact.getDepartment()
+            );
         }
     }
 }

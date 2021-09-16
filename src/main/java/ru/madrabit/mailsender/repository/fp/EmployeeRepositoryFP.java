@@ -3,11 +3,11 @@ package ru.madrabit.mailsender.repository.fp;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeRepositoryFP extends CrudRepository<Employee, Integer> {
 
@@ -35,5 +35,5 @@ public interface EmployeeRepositoryFP extends CrudRepository<Employee, Integer> 
     @Query("SELECT DISTINCT employee FROM Employee employee join fetch employee.department dep join fetch employee.counterparty contragent " +
             QUERY
     )
-    List<Employee> findEmployeeByDeps(@Param("deps") List<Integer> deps, @Param("orgType") List<Float> orgTypes, Pageable pageable);
+    Optional<List<Employee>> findEmployeeByDeps(@Param("deps") List<Integer> deps, @Param("orgType") List<Float> orgTypes, Pageable pageable);
 }

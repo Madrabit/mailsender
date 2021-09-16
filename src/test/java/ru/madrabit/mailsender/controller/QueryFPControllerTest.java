@@ -41,7 +41,7 @@ class QueryFPControllerTest {
         employeeList.add(new Employee(1, "a", "b", "c",
                 1, 1, 1, 1, new Department(), new Counterparty()));
         when(service.findEmployeeByDeps(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-                .thenReturn(employeeList);
+                .thenReturn(java.util.Optional.of(employeeList));
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/query/fp/1/1")
                 .accept(MediaType.APPLICATION_JSON);
