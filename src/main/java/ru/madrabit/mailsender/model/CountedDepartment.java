@@ -2,6 +2,7 @@ package ru.madrabit.mailsender.model;
 
 
 import lombok.*;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
 import java.io.Serializable;

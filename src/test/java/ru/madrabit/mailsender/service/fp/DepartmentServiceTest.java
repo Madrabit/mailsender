@@ -4,6 +4,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import ru.madrabit.mailsender.consts.TypeOfOrganisation;
 import ru.madrabit.mailsender.model.CountedDepartment;
 import ru.madrabit.mailsender.model.DepartmentToFront;
@@ -19,6 +20,8 @@ class DepartmentServiceTest {
 
     @Autowired
     private DepartmentService service;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Test
     void findAll() {
@@ -32,6 +35,15 @@ class DepartmentServiceTest {
                             + toFront.getAmountNfo() + ", "
                             + toFront.getAmountSng()
             );
+        }
+    }
+
+    @Test
+    void testRedis() {
+        final String depsFromCache = (String) redisTemplate.opsForHash().get("deps", "deps");
+        final String[] split = depsFromCache.split(",");
+        for (String s : split) {
+            System.out.println(s);
         }
     }
 }
