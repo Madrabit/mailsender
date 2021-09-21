@@ -32,7 +32,6 @@ public class DepartmentService {
 
     public List<DepartmentToFront> findAll() {
         final List<CountedDepartment> departments = repository.findAllDeps();
-        final String orgTypesFromCache = (String) redisTemplate.opsForHash().get("orgTypes", "orgTypes");
         Map<Integer, DepartmentToFront> deps = new TreeMap<>();
         for (CountedDepartment department : departments) {
             final Float depTypeNumber = department.getDepType();
@@ -43,8 +42,7 @@ public class DepartmentService {
                         depTypeNumber == orgTypes.SNG ? department.getAmount() : 0L,
                         depTypeNumber == orgTypes.BANKS ? department.getAmount() : 0L,
                         depTypeNumber == orgTypes.NFO ? department.getAmount() : 0L,
-                        depTypeNumber == orgTypes.BANKS_BRANCHES ? department.getAmount() : 0L,
-                        false
+                        depTypeNumber == orgTypes.BANKS_BRANCHES ? department.getAmount() : 0L
                 ));
             } else {
                 final DepartmentToFront depObject = deps.get(department.getDepNumber());
@@ -61,10 +59,5 @@ public class DepartmentService {
         }
         return finalList;
     }
-
-    private boolean isChecked() {
-       return false;
-    }
-
 
 }

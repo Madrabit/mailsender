@@ -95,7 +95,7 @@ public class QueryFPController {
         if (deps == null || deps.isEmpty()) {
             throw new InvalidInputException("Empty parameter");
         }
-        redisTemplate.opsForHash().put("deps", "deps", deps.toString().substring(1, deps.toString().length()-1));
+        redisTemplate.opsForHash().put("deps", "deps", String.valueOf(deps));
         redisTemplate.opsForHash().put("orgTypes", "orgTypes", String.valueOf(orgTypes));
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "force-download"));

@@ -26,6 +26,4 @@ public class DepartmentToFront {
 
     private Long amountBanksBranches;
 
-    private boolean checkbox;
-
 }
