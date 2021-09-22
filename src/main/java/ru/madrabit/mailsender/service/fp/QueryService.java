@@ -37,19 +37,16 @@ public class QueryService {
     }
 
     public void getEmployeesByDepsOrgTypes(List<Integer> deps, List<Float> orgTypes) {
-        final List<Employee> employees = findAllEmployeeByDeps(deps, orgTypes).get();
+        final List<Employee> employees = findAllEmployeeByDeps(deps, orgTypes).orElseThrow();
         CreateExcel excel = new CreateExcel();
-        if (employees.size() == 0) {
-
-        } else {
-            excel.createExcel(EmployeeToDTOs(employees));
+        if (employees.size() != 0) {
+            excel.createExcel(employeeToDTOs(employees));
         }
-
     }
 
-    private List<EmployeeDTO> EmployeeToDTOs(List<Employee> employeeByDeps) {
+    private List<EmployeeDTO> employeeToDTOs(List<Employee> employeeByDeps) {
         return employeeByDeps.stream()
-                .map(employee -> EmployeeMapper.INSTANCE.toDto(employee))
+                .map(EmployeeMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
     }
 }

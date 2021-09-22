@@ -1,7 +1,6 @@
 package ru.madrabit.mailsender.dto;
 
 import lombok.*;
-import ru.madrabit.mailsender.model.Department;
 
 @Getter
 @Setter

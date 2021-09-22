@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import ru.madrabit.mailsender.model.Employee;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -42,7 +41,6 @@ class EmployeeRepositoryTest {
         final List<Employee> contacts = repository.findAll();
         System.out.println(contacts.get(contacts.size() - 1).getName());
     }
-
 
 
 }

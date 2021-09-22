@@ -13,7 +13,6 @@ import ru.madrabit.mailsender.dto.EmployeeDTO;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 @Slf4j
@@ -29,13 +28,6 @@ public class CreateExcel {
                 + "employees.xlsx";
 
     }
-
-    private Integer objectId;
-    private String name;
-    private String surename;
-    private String email;
-    private String depName;
-    private Integer departmentNumber;
 
     public void createExcel(List<EmployeeDTO> employeeDTOList) {
         XSSFWorkbook workbook = new XSSFWorkbook();

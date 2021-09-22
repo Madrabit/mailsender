@@ -1,34 +1,23 @@
 package ru.madrabit.mailsender.service.fp;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.map.HashedMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 import ru.madrabit.mailsender.consts.TypeOfOrganisation;
 import ru.madrabit.mailsender.model.CountedDepartment;
 import ru.madrabit.mailsender.model.DepartmentToFront;
-import ru.madrabit.mailsender.model.OrgType;
 import ru.madrabit.mailsender.repository.fp.CountedDepartmentRepository;
-import springfox.documentation.annotations.Cacheable;
 
 import java.util.*;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class DepartmentService {
 
-    private CountedDepartmentRepository repository;
-    private TypeOfOrganisation orgTypes;
-    private RedisTemplate<String, String> redisTemplate;
-
-    public DepartmentService(CountedDepartmentRepository repository,
-                             TypeOfOrganisation orgTypes,
-                             RedisTemplate<String, String> redisTemplate) {
-        this.repository = repository;
-        this.orgTypes = orgTypes;
-        this.redisTemplate = redisTemplate;
-    }
+    private final CountedDepartmentRepository repository;
 
     public List<DepartmentToFront> findAll() {
         final List<CountedDepartment> departments = repository.findAllDeps();
@@ -39,17 +28,25 @@ public class DepartmentService {
                 deps.put(department.getDepNumber(), new DepartmentToFront(
                         department.getDepName().toLowerCase(Locale.ROOT),
                         department.getDepNumber(),
-                        depTypeNumber == orgTypes.SNG ? department.getAmount() : 0L,
-                        depTypeNumber == orgTypes.BANKS ? department.getAmount() : 0L,
-                        depTypeNumber == orgTypes.NFO ? department.getAmount() : 0L,
-                        depTypeNumber == orgTypes.BANKS_BRANCHES ? department.getAmount() : 0L
+                        depTypeNumber == TypeOfOrganisation.SNG ? department.getAmount() : 0L,
+                        depTypeNumber == TypeOfOrganisation.BANKS ? department.getAmount() : 0L,
+                        depTypeNumber == TypeOfOrganisation.NFO ? department.getAmount() : 0L,
+                        depTypeNumber == TypeOfOrganisation.BANKS_BRANCHES ? department.getAmount() : 0L
                 ));
             } else {
                 final DepartmentToFront depObject = deps.get(department.getDepNumber());
-                if (depTypeNumber == orgTypes.SNG) depObject.setAmountSng(department.getAmount());
-                if (depTypeNumber == orgTypes.BANKS) depObject.setAmountBanks(department.getAmount());
-                if (depTypeNumber == orgTypes.NFO) depObject.setAmountNfo(department.getAmount());
-                if (depTypeNumber == orgTypes.BANKS_BRANCHES) depObject.setAmountBanksBranches(department.getAmount());
+                if (depTypeNumber == TypeOfOrganisation.SNG) {
+                    depObject.setAmountSng(department.getAmount());
+                }
+                if (depTypeNumber == TypeOfOrganisation.BANKS) {
+                    depObject.setAmountBanks(department.getAmount());
+                }
+                if (depTypeNumber == TypeOfOrganisation.NFO) {
+                    depObject.setAmountNfo(department.getAmount());
+                }
+                if (depTypeNumber == TypeOfOrganisation.BANKS_BRANCHES) {
+                    depObject.setAmountBanksBranches(department.getAmount());
+                }
                 deps.put(department.getDepNumber(), depObject);
             }
         }

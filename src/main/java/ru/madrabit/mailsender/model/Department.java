@@ -1,6 +1,5 @@
 package ru.madrabit.mailsender.model;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

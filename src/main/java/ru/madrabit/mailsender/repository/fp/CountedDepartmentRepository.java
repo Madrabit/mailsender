@@ -2,9 +2,6 @@ package ru.madrabit.mailsender.repository.fp;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import ru.madrabit.mailsender.model.CountedDepartment;
 
 import java.util.List;

@@ -1,12 +1,7 @@
 package ru.madrabit.mailsender.consts;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
-import ru.madrabit.mailsender.model.OrgType;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
 @Component

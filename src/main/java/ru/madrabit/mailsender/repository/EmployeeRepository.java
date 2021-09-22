@@ -44,5 +44,4 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
     List<Employee> findEmployeeByDepartmentNumber(@Param("depNumber") Integer depNumber);
 
 
-
 }

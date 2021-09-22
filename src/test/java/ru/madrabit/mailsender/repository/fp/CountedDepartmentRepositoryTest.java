@@ -7,8 +7,6 @@ import ru.madrabit.mailsender.model.CountedDepartment;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class CountedDepartmentRepositoryTest {
 
@@ -21,7 +19,7 @@ class CountedDepartmentRepositoryTest {
         for (CountedDepartment countedDepartment : list) {
             System.out.println(
                     countedDepartment.getDepNumber() + " : "
-                     + countedDepartment.getDepType() + " : "
+                            + countedDepartment.getDepType() + " : "
                             + countedDepartment.getAmount()
             );
         }

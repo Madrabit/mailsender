@@ -50,7 +50,4 @@ public class ExcelEmailsDao implements EmailsDAO {
         }
     }
 
-    public void setEmails() {
-
-    }
 }

@@ -2,17 +2,19 @@ package ru.madrabit.mailsender.controller;
 
 import com.google.common.io.ByteStreams;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import ru.madrabit.mailsender.dto.EmployeeDTO;
 import ru.madrabit.mailsender.exception.InvalidInputException;
 import ru.madrabit.mailsender.exception.NoSuchResourceException;
@@ -33,36 +35,25 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @Api
+@RequiredArgsConstructor
 public class QueryFPController {
 
     private final QueryService service;
-    private RedisTemplate redisTemplate;
+    private final RedisTemplate redisTemplate;
 
-
-    @ApiModelProperty(name = "Department", dataType = "List", example = "[1, 2]")
-    private List<Integer> deps;
-
-
-    public QueryFPController(QueryService service, RedisTemplate redisTemplate) {
-        this.service = service;
-        this.redisTemplate = redisTemplate;
-    }
-
-    @ApiOperation(value = "Get list of employees")
     @GetMapping("/query/fp/{deps}/{orgTypes}")
     public List<EmployeeDTO> getEmployeesByDeps(
-            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) throws InvalidInputException, NoSuchResourceException {
+            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) throws NoSuchResourceException {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.DESC, "objectId");
         final Optional<List<Employee>> employeeByDeps = service.findEmployeeByDeps(deps, orgTypes, pageable);
-        final List<Employee> employees = employeeByDeps.get();
+        final List<Employee> employees = employeeByDeps.orElseThrow();
         if (employeeByDeps.get().isEmpty()) {
             throw new NoSuchResourceException("Invalid one of request's parameters "
                     + deps + " or " + orgTypes + ", nothing was found");
         }
-        return EmployeeToDTOs(employees);
+        return employeeToDTOs(employees);
     }
 
-    @ApiOperation(value = "Get amount of employees selected by Departments")
     @GetMapping("/query/fp/count/{deps}/{orgTypes}")
     public Integer countEmployeesByDeps(
             @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) {
@@ -79,9 +70,9 @@ public class QueryFPController {
     }
     */
 
-    private List<EmployeeDTO> EmployeeToDTOs(List<Employee> employeeByDeps) {
+    private List<EmployeeDTO> employeeToDTOs(List<Employee> employeeByDeps) {
         return employeeByDeps.stream()
-                .map(employee -> EmployeeMapper.INSTANCE.toDto(employee))
+                .map(EmployeeMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -91,7 +82,7 @@ public class QueryFPController {
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
     public HttpEntity<ByteArrayResource> getFileFromDir(
-            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) throws IOException, InvalidInputException {
+            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) throws InvalidInputException {
         if (deps == null || deps.isEmpty()) {
             throw new InvalidInputException("Empty parameter");
         }
@@ -105,20 +96,21 @@ public class QueryFPController {
         if (file == null) {
             throw new InvalidInputException("Wrong file name or does not exist");
         }
-        return new HttpEntity<>(file.get(), header);
+        return new HttpEntity<>(file.orElseThrow(), header);
     }
 
-    private final static String s = File.separator;
-    private static final String BASE_DIR = System.getProperty("user.dir") + s + "downloads" + s;
+    private final static String SEPARATOR = File.separator;
+    private static final String BASE_DIR = System.getProperty("user.dir") + SEPARATOR + "downloads" + SEPARATOR;
 
     public Optional<ByteArrayResource> getFileFromDir() {
         Optional<ByteArrayResource> resource = null;
         Path file = Paths.get(BASE_DIR, "employees.xlsx");
         try (InputStream inputStream = Files.newInputStream(file)) {
-            resource = Optional.ofNullable(new ByteArrayResource(ByteStreams.toByteArray(inputStream)));
+            resource = Optional.of(new ByteArrayResource(ByteStreams.toByteArray(inputStream)));
         } catch (IOException e) {
             log.error("IO exception getting .xlsx {}", e.getMessage());
         }
         return resource;
     }
+
 }

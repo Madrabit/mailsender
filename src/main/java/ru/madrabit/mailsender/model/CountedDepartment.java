@@ -2,9 +2,10 @@ package ru.madrabit.mailsender.model;
 
 
 import lombok.*;
-import org.springframework.data.redis.core.RedisHash;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import java.io.Serializable;
 
 @Entity

@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.madrabit.mailsender.dto.EmployeeDTO;
 import ru.madrabit.mailsender.model.Counterparty;
 import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
