@@ -14,20 +14,17 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@Api
 @RequiredArgsConstructor
 public class DepartmentController {
 
     private final DepartmentService service;
     private final RedisTemplate<String, String> redisTemplate;
 
-    @ApiOperation(value = "Get list of employees")
     @GetMapping("/query/fp/deps/")
     public List<DepartmentToFront> getEmployeesByDeps() {
         final List<DepartmentToFront> list = service.findAll();
         return list;
     }
-
 
     @GetMapping("/query/fp/checked/")
     public Map<String, String> getChecked() {

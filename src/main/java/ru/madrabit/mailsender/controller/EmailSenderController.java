@@ -19,7 +19,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 
 @RestController
-@Api
 @RequiredArgsConstructor
 @Slf4j
 public class EmailSenderController {
@@ -27,16 +26,12 @@ public class EmailSenderController {
     private final JavaMailSender emailSender;
     private final EmailSenderService emailSenderService;
     private final RedisTemplate redisTemplate;
-    private final QueryService service;
-    private HtmlReader htmlReader;
+    private final HtmlReader htmlReader;
 
 
     @ApiOperation(value = "Send emails")
     @GetMapping("/send/{subject}")
-    public void sendSimpleMessage(
-            @ApiParam(name = "Subject",
-                    required = true, example = "RE: hello")
-            @PathVariable String subject) throws MessagingException {
+    public void sendSimpleMessage(@PathVariable String subject) throws MessagingException {
         emailSenderService.setSubject(subject);
         emailSenderService.generate();
         List<MimeMessage> messages = emailSenderService.getMessages();

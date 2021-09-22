@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@Api
 @RequiredArgsConstructor
 public class QueryFPController {
 

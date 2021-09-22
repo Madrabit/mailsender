@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,31 +19,23 @@ import ru.madrabit.mailsender.service.FileSystemStorageService;
 
 @RestController
 @RequestMapping("files/")
-@Api
+@RequiredArgsConstructor
 public class FileUploadController {
 
     private final FileSystemStorageService fileSystemStorageService;
 
-    @Autowired
-    public FileUploadController(FileSystemStorageService fileSystemStorageService) {
-        this.fileSystemStorageService = fileSystemStorageService;
-    }
-
     @GetMapping("/")
-    public ResponseEntity<String> listUploadedFiles(Model model) throws IOException {
-
+    public ResponseEntity<String> listUploadedFiles(Model model) {
         final List<String> serveFile = fileSystemStorageService.loadAll().map(
                 path -> path.getFileName().toString())
                 .collect(Collectors.toList());
         model.addAttribute("files", serveFile);
-
         return ResponseEntity.ok(serveFile.toString());
     }
 
     @GetMapping("{filename}")
     @ResponseBody
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
-
         Resource file = fileSystemStorageService.loadAsResource(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);

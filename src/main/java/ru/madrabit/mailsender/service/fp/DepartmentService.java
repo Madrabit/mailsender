@@ -2,9 +2,7 @@ package ru.madrabit.mailsender.service.fp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 import ru.madrabit.mailsender.consts.TypeOfOrganisation;
 import ru.madrabit.mailsender.model.CountedDepartment;
 import ru.madrabit.mailsender.model.DepartmentToFront;
@@ -16,7 +14,6 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 public class DepartmentService {
-
     private final CountedDepartmentRepository repository;
 
     public List<DepartmentToFront> findAll() {
