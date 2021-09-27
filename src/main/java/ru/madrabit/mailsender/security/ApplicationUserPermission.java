@@ -1,10 +1,8 @@
 package ru.madrabit.mailsender.security;
 
 public enum ApplicationUserPermission {
-    STUDENT_READ("student:read"),
-    STUDENT_WRITE("student:write"),
-    COURSE_READ("course:read"),
-    COURSE_WRITE("course:write");
+    MANAGER_READ("manager:read"),
+    ADMIN_READ("manager:read");
 
     private final String permission;
 

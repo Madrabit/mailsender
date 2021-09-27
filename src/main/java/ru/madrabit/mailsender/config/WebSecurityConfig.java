@@ -1,5 +1,6 @@
 package ru.madrabit.mailsender.config;
 
+import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,15 +16,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static ru.madrabit.mailsender.security.ApplicationUserRole.*;
 
@@ -44,22 +50,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login")
-                .permitAll()
-                .antMatchers("/**", "/query/fp/checked/")
-                .hasAnyRole("USER")
-                //   .antMatchers("/query/fp/deps/",
-                //                      "/query/fp/checked/").hasAnyAuthority("USER")
-                // .antMatchers("/**").hasRole("USER")
+                .antMatchers("/**", "/query/fp/checked/", "/query/fp/deps/")
+                .hasAnyRole(ADMIN.name(), MANAGER.name())
                 .and()
                 .httpBasic();
+        http.logout(logout -> logout
+                .permitAll()
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                }));
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService());
-//
-//    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        configuration.setAllowedMethods(ImmutableList.of("HEAD",
+                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService());
+
+    }
 //    protected void configure(HttpSecurity http) throws Exception {
 //        http.cors();
 //        http.csrf().disable() // TODO: I will teach this in detail in the next section
@@ -77,88 +99,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // auth.userDetailsService(userDetailsService());
-        auth
-                .inMemoryAuthentication()
-                .withUser("1")
-                .password(passwordEncoder().encode("2"))
-                .roles("USER");
-    }
-
-
-//    @Bean
 //    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("1")
-//                        .password("1")
-//                        .roles("USER")
-//                        .build();
-//        return new InMemoryUserDetailsManager(user);
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//      //   auth.userDetailsService(userDetailsService());
+//
+//        auth
+//                .inMemoryAuthentication()
+//                .withUser("1")
+//                .password(passwordEncoder().encode("2"))
+//                .roles("USER");
 //    }
 
-
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurerAdapter() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedMethods("*")
-//                        .allowedOrigins("http://localhost:4200")
-//                        .allowedHeaders("*");
-//            }
-//        };
-//    }
-
-    //    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//
-//        CorsConfiguration configuration = new CorsConfiguration();
-//
-//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-//
-//        configuration.setAllowedMethods(Arrays.asList("*"));
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//
-//        source.registerCorsConfiguration("/**", configuration);
-//
-//        return source;
-//
-//    }
-//
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-        UserDetails annaSmithUser = User.builder()
-                .username("2")
-                .password(passwordEncoder().encode("2"))
-//                .roles(STUDENT.name()) // ROLE_STUDENT
-                .authorities(STUDENT.getGrantedAuthorities())
+        UserDetails elina = User.builder()
+                .username("elina")
+                .password(passwordEncoder().encode("elina.123"))
+                .authorities(MANAGER.getGrantedAuthorities())
                 .build();
 
-        UserDetails lindaUser = User.builder()
-                .username("linda")
-                .password(passwordEncoder().encode("password123"))
-//                .roles(ADMIN.name()) // ROLE_ADMIN
+        UserDetails admin = User.builder()
+                .username("1")
+                .password(passwordEncoder().encode("2"))
                 .authorities(ADMIN.getGrantedAuthorities())
                 .build();
 
-        UserDetails tomUser = User.builder()
-                .username("tom")
-                .password(passwordEncoder().encode("password123"))
-//                .roles(ADMINTRAINEE.name()) // ROLE_ADMINTRAINEE
-                .authorities(ADMINTRAINEE.getGrantedAuthorities())
-                .build();
-
         return new InMemoryUserDetailsManager(
-                annaSmithUser,
-                lindaUser,
-                tomUser
+                admin,
+                elina
         );
 
     }
