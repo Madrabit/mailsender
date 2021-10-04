@@ -1,4 +1,4 @@
-package ru.madrabit.mailsender.service.fp;
+package ru.madrabit.mailsender.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,15 +7,17 @@ import ru.madrabit.mailsender.consts.TypeOfOrganisation;
 import ru.madrabit.mailsender.model.CountedDepartment;
 import ru.madrabit.mailsender.model.DepartmentToFront;
 import ru.madrabit.mailsender.repository.fp.CountedDepartmentRepository;
+import ru.madrabit.mailsender.service.DepartmentService;
 
 import java.util.*;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class DepartmentService {
+public class DepartmentServiceImpl implements DepartmentService {
     private final CountedDepartmentRepository repository;
 
+    @Override
     public List<DepartmentToFront> findAll() {
         final List<CountedDepartment> departments = repository.findAllDeps();
         Map<Integer, DepartmentToFront> deps = new TreeMap<>();

@@ -5,16 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import ru.madrabit.mailsender.model.DepartmentToFront;
+import ru.madrabit.mailsender.service.DepartmentService;
 
 import java.util.List;
 import java.util.Objects;
 
 @SpringBootTest
-class DepartmentServiceTest {
+class DepartmentServiceImplTest {
 
 
     @Autowired
     private DepartmentService service;
+
     @Autowired
     private RedisTemplate redisTemplate;
 

@@ -1,12 +1,6 @@
 package ru.madrabit.mailsender.controller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.madrabit.mailsender.exception.StorageFileNotFoundException;
 import ru.madrabit.mailsender.service.FileSystemStorageService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("files/")

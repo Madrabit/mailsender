@@ -1,7 +1,6 @@
 package ru.madrabit.mailsender.controller;
 
 import com.google.common.io.ByteStreams;
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -12,7 +11,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +19,8 @@ import ru.madrabit.mailsender.exception.InvalidInputException;
 import ru.madrabit.mailsender.exception.NoSuchResourceException;
 import ru.madrabit.mailsender.mapper.EmployeeMapper;
 import ru.madrabit.mailsender.model.Employee;
-import ru.madrabit.mailsender.service.fp.QueryService;
+import ru.madrabit.mailsender.service.QueryService;
+import ru.madrabit.mailsender.service.impl.QueryServiceImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,11 +34,15 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 public class QueryFPController {
 
     private final QueryService service;
     private final RedisTemplate redisTemplate;
+
+    public QueryFPController(QueryServiceImpl service, RedisTemplate redisTemplate) {
+        this.service = service;
+        this.redisTemplate = redisTemplate;
+    }
 
     @GetMapping("/query/fp/{deps}/{orgTypes}")
     public List<EmployeeDTO> getEmployeesByDeps(
@@ -59,16 +62,6 @@ public class QueryFPController {
             @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) {
         return service.countEmployeeByDeps(deps, orgTypes);
     }
-
-    /*
-    @ApiOperation(value = "Get list of employees")
-    @GetMapping("/query/fp/download/{deps}/{orgTypes}")
-    public String downloadEmpByDeps(
-            @PathVariable List<Integer> deps, @PathVariable List<Float> orgTypes) throws InvalidInputException, NoSuchResourceException {
-                service.getEmployeesByDepsOrgTypes(deps, orgTypes);
-                return HttpStatus.OK.toString();
-    }
-    */
 
     private List<EmployeeDTO> employeeToDTOs(List<Employee> employeeByDeps) {
         return employeeByDeps.stream()

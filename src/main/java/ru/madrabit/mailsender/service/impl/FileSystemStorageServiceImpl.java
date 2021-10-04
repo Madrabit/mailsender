@@ -1,4 +1,4 @@
-package ru.madrabit.mailsender.service;
+package ru.madrabit.mailsender.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.madrabit.mailsender.config.StorageProperties;
 import ru.madrabit.mailsender.exception.StorageException;
 import ru.madrabit.mailsender.exception.StorageFileNotFoundException;
+import ru.madrabit.mailsender.service.FileSystemStorageService;
 
 @Service
 public class FileSystemStorageServiceImpl implements FileSystemStorageService {

@@ -5,17 +5,18 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import ru.madrabit.mailsender.model.DepartmentToFront;
-import ru.madrabit.mailsender.service.fp.DepartmentService;
+import ru.madrabit.mailsender.service.DepartmentService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.nio.file.attribute.UserPrincipal;
-import java.security.Principal;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -28,27 +29,27 @@ public class DepartmentController {
     private final RedisTemplate<String, String> redisTemplate;
 
     @GetMapping("/")
-    public String login(){
-        return "authenticated successfully" ;
+    public String login() {
+        return "authenticated successfully";
     }
 
     @GetMapping("/user")
     public UserPrincipal user(HttpServletRequest request) {
         String authToken = request.getHeader("Authorization")
                 .substring("Basic".length()).trim();
-        return () ->  new String(Base64.getDecoder()
-                        .decode(authToken));
+        return () -> new String(Base64.getDecoder()
+                .decode(authToken));
     }
 
     @RequestMapping(value = {"/logout"}, method = RequestMethod.POST)
-    public int logoutDo(HttpServletRequest request, HttpServletResponse response){
-        HttpSession session= request.getSession(false);
+    public int logoutDo(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();
-        session= request.getSession(false);
-        if(session != null) {
+        session = request.getSession(false);
+        if (session != null) {
             session.invalidate();
         }
-        for(Cookie cookie : request.getCookies()) {
+        for (Cookie cookie : request.getCookies()) {
             cookie.setMaxAge(0);
         }
 

@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.madrabit.mailsender.model.Counterparty;
 import ru.madrabit.mailsender.model.Department;
 import ru.madrabit.mailsender.model.Employee;
-import ru.madrabit.mailsender.service.fp.QueryService;
+import ru.madrabit.mailsender.service.impl.QueryServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ class QueryFPControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    QueryService service;
+    QueryServiceImpl service;
 
     @Test
     void getEmployeesByDeps() throws Exception {
