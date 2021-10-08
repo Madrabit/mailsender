@@ -1,6 +1,9 @@
 package ru.madrabit.mailsender.controller;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.experimental.FieldDefaults;
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,10 +26,11 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class DepartmentController {
 
-    private final DepartmentService service;
-    private final RedisTemplate<String, String> redisTemplate;
+    DepartmentService service;
+    RedisTemplate<String, String> redisTemplate;
 
     @GetMapping("/")
     public String login() {
